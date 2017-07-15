@@ -1,0 +1,64 @@
+module button(clk, rst,button,seven,sego);
+
+	input clk, rst, button;
+	
+	output [5:0]seven;
+	output [7:0]sego;
+
+	reg [5:0]seven;
+	reg [7:0]sego;
+	reg [24:0]delayButton;
+	reg [3:0] temp;
+	reg flagButton;
+	
+	
+	always@(posedge clk)
+	begin
+		if(!rst)
+		begin
+			seven = 6'b111110;
+			sego = 8'b11000000;
+			flagButton = 1'b0;
+			delayButton = 25'd0;
+			
+		end
+		
+		else
+		
+		begin
+		if((!button)&&(!flagButton)) flagButton = 1'b1;
+		else if(flagButton)
+		begin
+				delayButton = delayButton + 1'b1;
+				if(delayButton == 25'b1010000000000000000000000)
+				begin
+					flagButton = 1'b0;
+					delayButton = 25'd0;
+					sego = 8'b11000000;
+					seven = 6'b111110;
+				temp = temp +1;
+				case (temp)
+            4'b0000: sego = 8'b11000000; // 0
+            4'b0001: sego = 8'b11111001; // 1
+            4'b0010: sego = 8'b10100100; // 2
+            4'b0011: sego = 8'b10110000; // 3 
+            4'b0100: sego = 8'b10011001; // 4 
+            4'b0101: sego = 8'b10010010; // 5 
+            4'b0110: sego = 8'b10000010; // 6 
+            4'b0111: sego = 8'b11111000; // 7 
+            4'b1000: sego = 8'b10000000; // 8
+            4'b1001: sego = 8'b10010000; // 9
+            4'b1010: sego = 8'b11000000; // 10
+            4'b1011: sego = 8'b11111001; // 11
+            4'b1100: sego = 8'b10100100; // 12
+            4'b1101: sego = 8'b10110000; // 13
+            4'b1110: sego = 8'b10011001; // 14
+            4'b1111: sego = 8'b10010010; // 15
+				endcase
+				end //end if begin
+			end  //end else if begin
+		end  // end else begin
+	end  //end always begin
+	
+	
+endmodule 

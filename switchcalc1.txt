@@ -1,0 +1,45 @@
+module switchcalc(clk, rst, switch, LED);
+
+input clk, rst;
+input [7:0]switch;
+output [11:0]LED;
+reg [11:0]LED;
+reg [3:0]rot;
+
+always@(posedge clk)
+begin
+	if(!rst)
+		LED = 12'b000000000000;
+	else
+	begin
+		rot = 4'b0000;
+		if(switch[0])
+			rot = rot + 1'b1;
+		if(switch[1])
+			rot = rot + 1'b1;
+		if(switch[2])
+			rot = rot + 1'b1;
+		if(switch[3])
+			rot = rot + 1'b1;
+		if(switch[4])
+			rot = rot + 1'b1;
+		if(switch[5])
+			rot = rot + 1'b1;
+		if(switch[6])
+			rot = rot + 1'b1;
+		if(switch[7])
+			rot = rot + 1'b1;
+		case(rot)
+			4'b0000 : LED = 12'b000000000000;
+			4'b0001 : LED = 12'b000000000001;
+			4'b0010 : LED = 12'b000000000011;
+			4'b0011 : LED = 12'b000000000111;
+			4'b0100 : LED = 12'b000000001111;
+			4'b0101 : LED = 12'b000000011111;
+			4'b0110 : LED = 12'b000000111111;
+			4'b0111 : LED = 12'b000001111111;
+			4'b1000 : LED = 12'b000011111111;
+		endcase
+	end
+end
+endmodule
